@@ -71,7 +71,7 @@ export default function Footer() {
                             </div>
                         </div>
                         <div className="md:text-right">
-                            <p className="font-poppins-medium text-sm text-gray-400">&copy; 2026 Monev Project. Semua hak dilindungi.</p>
+                            <p className="font-poppins-medium text-sm text-gray-400">&copy; 2026 {import.meta.env.VITE_APP_NAME}. Semua hak dilindungi.</p>
                         </div>
                     </div>
                 </div>

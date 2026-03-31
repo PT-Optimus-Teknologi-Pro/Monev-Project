@@ -53,7 +53,7 @@ export default function SplashScreen() {
 
         <div className="mt-10 text-center animate-[fadeInUp_1s_ease-out_0.3s_both]">
           <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
-            MONEV PROJECT
+            {import.meta.env.VITE_APP_NAME}
           </h1>
           <p className="mt-4 text-lg md:text-xl text-amber-50/95 font-medium max-w-md tracking-wide">
             Sistem Monitoring dan Evaluasi Proyek
