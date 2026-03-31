@@ -1,22 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useRealisasiHooks from "../hooks/RealisasiHooks";
 import { FormatPackage } from "../ui/FormatPackage";
 
 export default function BottomPackage() {
     const { realisasiData, tahunData } = useRealisasiHooks();
-    const [select, setSelect] = useState(tahunData[tahunData?.length - 1]?.text as any);
+    const [select, setSelect] = useState<any>(null);
     const tableData = useMemo(() => {
         const filtered = select
             ? realisasiData.filter((item: any) =>
                 item?.schedule?.rab?.data_entry?.tahun_anggaran === select
             )
             : [];
-            
-        setSelect(tahunData[tahunData?.length - 1]?.text as any)
-        return FormatPackage(filtered, 'bottom').slice(0, 10);
-    }, [realisasiData, select, setSelect, tahunData]);
 
+        return FormatPackage(filtered, 'bottom').slice(0, 10);
+    }, [realisasiData, select]);
+
+    useEffect(() => {
+        if (tahunData?.length > 0) {
+            setSelect(tahunData[tahunData.length - 1]?.text);
+        }
+    }, [tahunData]);
     return (
         <div className="w-full min-h-screen p-4  sm:p-6 lg:p-8 mt-8" data-aos="fade-up" data-aos-duration="1000">
             <div className="max-w-350 mx-auto">
@@ -32,7 +36,7 @@ export default function BottomPackage() {
                         </select>
                     </div>
                 </div>
-                
+
                 <div className="bg-white rounded-3xl overflow-hidden border border-gray-100">
                     <div className="overflow-x-auto">
                         <table className="w-full">
@@ -116,7 +120,7 @@ export default function BottomPackage() {
                                         <td className="px-6 py-5 text-center">
                                             <div className="flex flex-col items-center gap-2">
                                                 <div className="w-full bg-gray-200 rounded-full h-2.5 max-w-25">
-                                                    <div className="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style={{width: `${item.perencanaan_minggu_ini_pct}%`}}></div>
+                                                    <div className="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style={{ width: `${item.perencanaan_minggu_ini_pct}%` }}></div>
                                                 </div>
                                                 <span className="font-poppins-bold text-sm text-blue-700">{item.perencanaan_minggu_ini_pct}%</span>
                                             </div>
@@ -124,17 +128,16 @@ export default function BottomPackage() {
                                         <td className="px-6 py-5 text-center">
                                             <div className="flex flex-col items-center gap-2">
                                                 <div className="w-full bg-gray-200 rounded-full h-2.5 max-w-25">
-                                                    <div className="bg-green-600 h-2.5 rounded-full transition-all duration-500" style={{width: `${item.aktual_pct}%`}}></div>
+                                                    <div className="bg-green-600 h-2.5 rounded-full transition-all duration-500" style={{ width: `${item.aktual_pct}%` }}></div>
                                                 </div>
                                                 <span className="font-poppins-bold text-sm text-green-700">{item.aktual_pct}%</span>
                                             </div>
                                         </td>
                                         <td className="px-6 py-5 text-center">
-                                            <div className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-poppins-bold text-sm shadow-md ${
-                                                item.perencanaan_minggu_ini_pct <= item.aktual_pct
-                                                    ? 'bg-linear-to-r from-green-500 to-green-600 text-white' 
+                                            <div className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-poppins-bold text-sm shadow-md ${item.perencanaan_minggu_ini_pct <= item.aktual_pct
+                                                    ? 'bg-linear-to-r from-green-500 to-green-600 text-white'
                                                     : 'bg-linear-to-r from-red-500 to-red-600 text-white'
-                                            }`}>
+                                                }`}>
                                                 {item.perencanaan_minggu_ini_pct <= item.aktual_pct ? '↑' : item.perencanaan_minggu_ini_pct > item.aktual_pct ? '↓' : '→'}
                                                 <span>{(item.deviasi_persen).toFixed(2)}%</span>
                                             </div>
@@ -160,9 +163,9 @@ export default function BottomPackage() {
                             <h3 className="font-poppins-bold text-2xl text-gray-800 mb-2">Belum Ada Data</h3>
                             <p className="font-poppins-regular text-gray-500 text-base mb-6 max-w-xs mx-auto">Silakan pilih tahun anggaran untuk menampilkan data realisasi pekerjaan konstruksi</p>
                             <div className="flex justify-center gap-2">
-                                <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: "0s"}}></div>
-                                <div className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{animationDelay: "0.15s"}}></div>
-                                <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: "0.3s"}}></div>
+                                <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>
+                                <div className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: "0.15s" }}></div>
+                                <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0.3s" }}></div>
                             </div>
                         </div>
                     )}
