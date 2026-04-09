@@ -7,9 +7,7 @@ import { useEffect, useState } from 'react';
 import usePokjaGroupHooks from '../../../hooks/PokjaGroupHooks';
 import FormInput from '../../../ui/FormInput';
 import FormUploadFile from '../../../ui/FormUploadFile';
-import { useAuth } from '../../../context/AuthContext';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate } from 'react-router-dom';
 
 interface UbahUserModalProps {
   isOpen: boolean;
@@ -43,7 +41,6 @@ export default function AdminLihatUserModal({ isOpen, onClose, data }: UbahUserM
   } = useUserHooks();
 
   const { role } = useRoleHooks();
-  const { user, loading } = useAuth();
   const { pokjaGroup } = usePokjaGroupHooks();
   const [showGroupPokja, setShowGroupPokja] = useState(false);
   const [isInit, setIsInit] = useState(false);
@@ -66,12 +63,8 @@ export default function AdminLihatUserModal({ isOpen, onClose, data }: UbahUserM
     fetchData();
   }, [roleId, data, handleShowUser, isInit]);
 
-  if (loading || !role || !pokjaGroup) {
+  if (!role || !pokjaGroup) {
     return <LoadingSpinner />;
-  }
-
-  if (!user || user.role.name !== 'admin') {
-    return <Navigate to="/" replace />;
   }
 
   if (!isOpen) {

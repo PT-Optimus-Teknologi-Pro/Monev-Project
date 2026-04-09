@@ -4,9 +4,8 @@ import Navbar from '../../../../components/Navbar';
 import BackButton from '../../../../ui/BackButton';
 import ShowTableForm from '../../../../ui/ShowTableForm';
 import FormInput from '../../../../ui/FormInput';
-import { useAuth } from '../../../../context/AuthContext';
+import { useParams } from 'react-router-dom';
 import LoadingSpinner from '../../../../ui/LoadingSpinner';
-import { Navigate, useParams } from 'react-router-dom';
 import useScheduleHooks from '../../../../hooks/ScheduleHooks';
 import WeekScheduleTable from '../../../../ui/WeekScheduleTable';
 import FormSelect from '../../../../ui/FormSelect';
@@ -20,7 +19,6 @@ export default function KepalaJadwalPelaksanaanView() {
     revisionCount
   } = useScheduleHooks();
 
-  const { user, loading } = useAuth();
   const { id } = useParams();
 
   useEffect(() => {
@@ -31,13 +29,10 @@ export default function KepalaJadwalPelaksanaanView() {
     }
   }, [id, setSelectedId, selectedRevision]);
 
-  if (loading || !scheduleDataById) {
+  if (!scheduleDataById) {
     return <LoadingSpinner />
   }
 
-  if (!user || (user.role.name != "kepala bagian" && user.role.name != "kepala biro")) {
-    return <Navigate to="/" replace />
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

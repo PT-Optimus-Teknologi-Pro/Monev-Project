@@ -1,20 +1,9 @@
-import { Navigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
-import { useAuth } from '../../context/AuthContext';
 import useAPISetting from '../../hooks/APISetting';
-import LoadingSpinner from '../../ui/LoadingSpinner';
 
 export default function Konfigurasi() {
   const { baseUrl, setBaseUrl, handlePostApiSetting, apiData } = useAPISetting();
-  const { user, loading } = useAuth();
 
-  if (loading) {
-    return <LoadingSpinner/>
-  }
-
-  if (!user || user.role.name != "admin") {
-    return <Navigate to="/" replace/>
-  }
   return (
     <div className="min-h-screen bg-gray-50 font-poppins-regular py-24">
       <Navbar/>

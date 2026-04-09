@@ -8,9 +8,6 @@ import BackButton from '../../../ui/BackButton';
 import ShowTableForm from '../../../ui/ShowTableForm';
 import FormInput from '../../../ui/FormInput';
 import SubmitButton from '../../../ui/SubmitButton';
-import { useAuth } from '../../../context/AuthContext';
-import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate } from 'react-router-dom';
 import TableHeader from '../../../ui/TableHeader';
 import useScheduleHooks from '../../../hooks/ScheduleHooks';
 import WeekScheduleTable from '../../../ui/WeekScheduleTable';
@@ -27,7 +24,6 @@ export default function PPKRealisasiAdd() {
 
     const { realisasiData } = useRealisasiHooks();
     const { scheduleData } = useScheduleHooks();
-    const { user, loading } = useAuth();
 
     useEffect(() => {
         if (showTender && !selectedSchedule) {
@@ -88,13 +84,6 @@ export default function PPKRealisasiAdd() {
         },
     ];  
 
-    if (loading) {
-        return <LoadingSpinner />
-    }
-
-    if (!user || user.role.name != "ppk") {
-        return <Navigate to="/" replace />
-    }
 
     return (
         <div className="min-h-screen bg-gray-50">

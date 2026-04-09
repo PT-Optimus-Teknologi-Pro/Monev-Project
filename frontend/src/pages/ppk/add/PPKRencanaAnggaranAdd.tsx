@@ -12,8 +12,6 @@ import SubmitButton from '../../../ui/SubmitButton';
 import FormGenerateExcel from '../../../ui/FormGenerateExcel';
 import useRABHooks from '../../../hooks/RABHooks';
 import { useAuth } from '../../../context/AuthContext';
-import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate } from 'react-router-dom';
 import TableHeader from '../../../ui/TableHeader';
 import useDataEntryHooks from '../../../hooks/DataEntryHooks';
 import RabDetailTable from '../../../ui/RabDetailTable';
@@ -68,7 +66,7 @@ export default function PPKRencanaAnggaranAdd() {
     program,
     rabData
   } = useRABHooks();
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
   const handleDownloadTemplate = () => {
     const link = document.createElement('a');
@@ -172,13 +170,6 @@ export default function PPKRencanaAnggaranAdd() {
     },
   ];
 
-  if (loading) {
-    return <LoadingSpinner />
-  }
-
-  if (!user || user.role.name != "ppk") {
-    return <Navigate to="/" replace />
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

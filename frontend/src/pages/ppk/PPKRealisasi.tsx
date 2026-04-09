@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import TableContent from "../../ui/TableContent";
 import TableHeader from "../../ui/TableHeader";
 import { useEffect, useState } from 'react';
 import { useAuth } from "../../context/AuthContext";
-import LoadingSpinner from "../../ui/LoadingSpinner";
 import useRealisasiHooks from "../../hooks/RealisasiHooks";
 
 export default function PPKRealisasi() {
@@ -14,7 +13,7 @@ export default function PPKRealisasi() {
     const [search, setSearch] = useState('');
     const [selectRevisi, setSelectRevisi] = useState<RABProps | null>(null);
     const [selectPreview, setSelectPreview] = useState<any>(null);
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
     const { realisasiData, tahunData, satkerData } = useRealisasiHooks();
     const [scheduleDataFilter, setScheduleDataFilter] = useState<any[]>([]);
     const navigate = useNavigate();
@@ -82,13 +81,6 @@ export default function PPKRealisasi() {
         fetchPreview();
     }, [selectRevisi, selectPreview, navigate]);
 
-    if (loading) {
-        return <LoadingSpinner/>
-    }
-
-    if (!user || user.role.name != "ppk") {
-        return <Navigate to="/" replace/>
-    }
 
     return (
         <div>

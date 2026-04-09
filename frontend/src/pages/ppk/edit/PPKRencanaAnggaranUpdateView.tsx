@@ -10,7 +10,7 @@ import SubmitButton from '../../../ui/SubmitButton';
 import useRABHooks from '../../../hooks/RABHooks';
 import { useAuth } from '../../../context/AuthContext';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import TableHeader from '../../../ui/TableHeader';
 import FormSelect from '../../../ui/FormSelect';
 import useDataEntryHooks from '../../../hooks/DataEntryHooks';
@@ -210,9 +210,6 @@ export default function PPKRencanaAnggaranUpdateView() {
     return <LoadingSpinner />
   }
 
-  if (!user || user.role.name != "ppk") {
-    return <Navigate to="/" replace />
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

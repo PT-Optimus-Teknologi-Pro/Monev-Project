@@ -6,14 +6,14 @@ import ShowTableForm from '../../../../ui/ShowTableForm';
 import FormInput from '../../../../ui/FormInput';
 import { useAuth } from '../../../../context/AuthContext';
 import LoadingSpinner from '../../../../ui/LoadingSpinner';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import WeekScheduleTable from '../../../../ui/WeekScheduleTable';
 import useRealisasiHooks from '../../../../hooks/RealisasiHooks';
 
 export default function KepalaRealisasiView() {
     const { id } = useParams();
     const { realisasiDataById, setSelectedId } = useRealisasiHooks();
-    const { user, loading } = useAuth();
+    const { loading } = useAuth();
 
     useEffect(() => {
         if (id) {
@@ -25,9 +25,6 @@ export default function KepalaRealisasiView() {
         return <LoadingSpinner />
     }
 
-    if (!user || (user.role.name != "kepala bagian" && user.role.name != "kepala biro")) {
-        return <Navigate to="/" replace />
-    }
 
     return (
         <div className="min-h-screen bg-gray-50">

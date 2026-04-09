@@ -6,9 +6,6 @@ import TableHeader from "../../ui/TableHeader";
 import AdminTambahUserModal from "./modal/AdminTambahUserModal";
 import AdminUbahUserModal from "./modal/AdminUbahUserModal";
 import AdminLihatUserModal from "./modal/AdminLihatUserModal";
-import { useAuth } from "../../context/AuthContext";
-import LoadingSpinner from "../../ui/LoadingSpinner";
-import { Navigate } from "react-router-dom";
 import useUserHooks from "../../hooks/UserHooks";
 
 export default function AdminManajemenPengguna() {
@@ -19,7 +16,6 @@ export default function AdminManajemenPengguna() {
     const [showModalPreview, setShowModalPreview] = useState(false);
     const [search, setSearch] = useState("");
     const [listUserFilter, setListUserFilter] = useState<UserProps[]>([]);
-    const { user, loading } = useAuth();
     const { listUser } = useUserHooks();
 
     const columns = [
@@ -83,13 +79,6 @@ export default function AdminManajemenPengguna() {
         filteringUserData();
     }, [selectedEdit, selectPreview, listUser, search]);
 
-    if (loading) {
-        return <LoadingSpinner />
-    }
-
-    if (user?.role.name != "admin" || !user) {
-        return <Navigate to="/" replace />
-    }
 
     return (
         <div>

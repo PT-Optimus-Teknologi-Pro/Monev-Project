@@ -8,7 +8,7 @@ import FormInput from '../../../ui/FormInput';
 import SubmitButton from '../../../ui/SubmitButton';
 import { useAuth } from '../../../context/AuthContext';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import WeekScheduleTable from '../../../ui/WeekScheduleTable';
 import useRealisasiHooks from '../../../hooks/RealisasiHooks';
 import RealizationModal from '../../../ui/RealizationModal';
@@ -20,7 +20,7 @@ export default function PPKRealisasiUpdateView() {
     const { id } = useParams();
 
     const { realisasiDataById, setSelectedId } = useRealisasiHooks();
-    const { user, loading } = useAuth();
+    const { loading } = useAuth();
 
     useEffect(() => {
         const fetchIsCheckDisabled = () => {
@@ -49,9 +49,6 @@ export default function PPKRealisasiUpdateView() {
         return <LoadingSpinner />
     }
 
-    if (!user || user.role.name != "ppk") {
-        return <Navigate to="/" replace />
-    }
 
     return (
         <div className="min-h-screen bg-gray-50">

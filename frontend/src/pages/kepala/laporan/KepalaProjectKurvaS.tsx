@@ -7,9 +7,6 @@ import Navbar from '../../../components/Navbar';
 import ShowTableForm from '../../../ui/ShowTableForm';
 import useRealisasiHooks from '../../../hooks/RealisasiHooks';
 import TableHeader from '../../../ui/TableHeader';
-import { useAuth } from '../../../context/AuthContext';
-import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate } from 'react-router-dom';
 import TableContent from '../../../ui/TableContent';
 import { FormatDate } from '../../../utils/FormatDate';
 import { RemainingWeeks } from '../../../utils/RemainingWeek';
@@ -27,7 +24,6 @@ export default function KepalaProjectKurvaS() {
   const [showTender, setShowTender] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const { realisasiData } = useRealisasiHooks();
-  const { loading, user } = useAuth();
   const [search, setSearch] = useState("");
   const [tenderDataFilter, setTenderDataFilter] = useState<RealizationProps[]>([]);
   const chartRef = useRef<any>(null);
@@ -234,13 +230,6 @@ export default function KepalaProjectKurvaS() {
     }
   };
 
-  if (loading) {
-    return <LoadingSpinner />
-  }
-
-  if (!user || (user.role.name != "kepala bagian" && user.role.name != "kepala biro")) {
-    return <Navigate to="/" replace />
-  }
 
   return (
     <div>
