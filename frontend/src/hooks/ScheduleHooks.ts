@@ -135,6 +135,41 @@ export default function useScheduleHooks() {
 
     const handleSchedulePost = async (dataTenderByRab: RABProps, dataItem: ScheduleItemProps[], weeksTotal: number) => {
         try {
+            const totalWeight = dataItem.reduce((acc, item) => {
+                return acc + Number(item.weight || 0);
+            }, 0);
+
+            if (totalWeight !== 100) {
+                SwalMessage({
+                    type: "error",
+                    title: "Gagal!",
+                    text: "Total bobot harus 100%"
+                });
+
+                return;
+            }
+
+            let cumulativeTotal = 0;
+            for (let i = 0; i < weeksTotal; i++) {
+                let weekly = 0;
+
+                for (let j = 0; j < dataItem.length; j++) {
+                    weekly += Number(dataItem[j].schedule_weeks[i]?.value || 0);
+                }
+
+                if (weekly === 0 && cumulativeTotal === 0) continue;
+                cumulativeTotal += weekly;
+            }
+
+            if (Math.abs(cumulativeTotal - 100) > 0.01) {
+                SwalMessage({
+                    type: "error",
+                    title: "Gagal!",
+                    text: `Total kumulatif harus 100%, saat ini ${cumulativeTotal}%`
+                });
+                return;
+            }
+
             if (dataItem.length < 0 || !startDate || !endDate) {
                 SwalMessage({
                     type: "error",
@@ -153,7 +188,6 @@ export default function useScheduleHooks() {
                     text: "Tanggal pelaksanaan dengan minggu pelaksanaan tidak sesuai!"
                 });
 
-                console.log(weeksTotal, weeksFromDate)
                 return;
             }
 
@@ -233,6 +267,41 @@ export default function useScheduleHooks() {
                     text: "Harap isi field yang telah kami sediakan!"
                 });
 
+                return;
+            }
+
+            const totalWeight = dataItem.reduce((acc, item) => {
+                return acc + Number(item.weight || 0);
+            }, 0);
+
+            if (totalWeight !== 100) {
+                SwalMessage({
+                    type: "error",
+                    title: "Gagal!",
+                    text: "Total bobot harus 100%"
+                });
+
+                return;
+            }
+
+            let cumulativeTotal = 0;
+            for (let i = 0; i < weeksTotal; i++) {
+                let weekly = 0;
+
+                for (let j = 0; j < dataItem.length; j++) {
+                    weekly += Number(dataItem[j].schedule_weeks[i]?.value || 0);
+                }
+
+                if (weekly === 0 && cumulativeTotal === 0) continue;
+                cumulativeTotal += weekly;
+            }
+
+            if (Math.abs(cumulativeTotal - 100) > 0.01) {
+                SwalMessage({
+                    type: "error",
+                    title: "Gagal!",
+                    text: `Total kumulatif harus 100%, saat ini ${cumulativeTotal}%`
+                });
                 return;
             }
 
