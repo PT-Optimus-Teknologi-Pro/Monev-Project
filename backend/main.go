@@ -29,8 +29,6 @@ func main() {
 		&models.Role{},
 		&models.User{},
 		&models.PokjaGroups{},
-		// &models.UserPokjaGroups{},
-		// &models.TenderPaket{},
 		&models.RabHeader{},
 		&models.RabDetail{},
 		&models.ScheduleHeader{},
@@ -38,7 +36,6 @@ func main() {
 		&models.ScheduleWeek{},
 		&models.RealisasiHeader{},
 		&models.RealisasiDetail{},
-		// &models.RealisasiWeek{},
 		&models.NonTenderKontractIsb{},
 		&models.NonTenderIsb{},
 		&models.NonTenderSelesaiIsb{},
@@ -59,6 +56,8 @@ func main() {
 		&models.Url{},
 	)
 
+	config.SeedData()
+
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
@@ -68,5 +67,5 @@ func main() {
 
 	routes.SetupRoutes(r)
 
-	r.Run("0.0.0.0:8081")
+	r.Run("0.0.0.0:8088")
 }
