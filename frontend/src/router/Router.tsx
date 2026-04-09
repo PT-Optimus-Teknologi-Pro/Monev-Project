@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import Login from "../pages/auth/Login"
 import Dashboard from "../pages/Dashboard"
 import PPKRencanaAnggaran from "../pages/ppk/PPKRencanaAnggaran"
