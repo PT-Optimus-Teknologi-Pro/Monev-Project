@@ -15,6 +15,7 @@ import useScheduleHooks from '../../../hooks/ScheduleHooks';
 import WeekScheduleTable from '../../../ui/WeekScheduleTable';
 import useRABHooks from '../../../hooks/RABHooks';
 import { ParseNumber } from '../../../utils/ParseNumber';
+import { useAuth } from '../../../context/AuthContext';
 
 const WEEK_START_COL = 'E';
 const formatLoopExcel = (index: number): string => {
@@ -139,6 +140,7 @@ export default function PPKJadwalPelaksanaanAdd() {
   const [tenderDataFilter, setTenderDataFilter] = useState<RABProps[]>([]);
   const [selectedRab, setSelectedRab] = useState<RABProps | null>(null);
 
+  const { user } = useAuth();
   const { rabData } = useRABHooks();
   const { handleSchedulePost, scheduleData, startDate, endDate, handleChangeSchedule } = useScheduleHooks();
 
@@ -208,7 +210,8 @@ export default function PPKJadwalPelaksanaanAdd() {
         const isExisting = scheduleData.some(
           schedule => schedule?.rab?.data_entry?.kode_paket == item?.data_entry.kode_paket
         );
-        return data && !isExisting;
+        const isUser = item?.data_entry.selected_ppk_id == user?.id;
+        return data && !isExisting && isUser;
       });
 
       setTenderDataFilter(filter as any);
