@@ -8,14 +8,14 @@ import FormInput from '../../../ui/FormInput';
 import FormUploadFile from '../../../ui/FormUploadFile';
 import { useAuth } from '../../../context/AuthContext';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import useUserHooks from '../../../hooks/UserHooks';
 import useDataEntryHooks from '../../../hooks/DataEntryHooks';
 import SubmitButton from '../../../ui/SubmitButton';
 
 export default function PokjaLaporanKelompokUpdateView() {
     const { id } = useParams();
-    const { user, loading } = useAuth();
+    const { loading } = useAuth();
     const { listUser } = useUserHooks();
     const [isDisabled, setIsDisabled] = useState(false);
     const [showSelectedPPK, setShowSelectedPPK] = useState(false);
@@ -99,9 +99,6 @@ export default function PokjaLaporanKelompokUpdateView() {
         return <LoadingSpinner />
     }
 
-    if (!user || user.role.name != "pokja/pp") {
-        return <Navigate to="/" replace />
-    }
 
     return (
         <div className="min-h-screen bg-gray-50">

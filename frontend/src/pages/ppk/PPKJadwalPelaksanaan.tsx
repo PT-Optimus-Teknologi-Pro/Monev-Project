@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import TableContent from "../../ui/TableContent";
 import TableHeader from "../../ui/TableHeader";
 import { useEffect, useState } from 'react';
 import { X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import LoadingSpinner from "../../ui/LoadingSpinner";
 import FormInput from "../../ui/FormInput";
 import { SwalMessage } from "../../utils/SwalMessage";
 import useScheduleHooks from "../../hooks/ScheduleHooks";
@@ -18,7 +17,7 @@ export default function PPKJadwalPelaksanaan() {
     const [selectRevisi, setSelectRevisi] = useState<RABProps | null>(null);
     const [showRevisi, setShowRevisi] = useState(false);
     const [selectPreview, setSelectPreview] = useState<any>(null);
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
     const { scheduleData, tahunData, satkerData, handleScheduleDelete } = useScheduleHooks();
     const [scheduleDataFilter, setScheduleDataFilter] = useState<any[]>([]);
     const [reason, setReason] = useState("");
@@ -99,13 +98,6 @@ export default function PPKJadwalPelaksanaan() {
         fetchPreview();
     }, [selectRevisi, selectPreview, navigate, reason]);
 
-    if (loading) {
-        return <LoadingSpinner/>
-    }
-
-    if (!user || user.role.name != "ppk") {
-        return <Navigate to="/" replace/>
-    }
 
     return (
         <div>

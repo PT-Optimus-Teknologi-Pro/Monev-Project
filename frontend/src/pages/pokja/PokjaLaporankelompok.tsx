@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import TableContent from "../../ui/TableContent";
 import TableHeader from "../../ui/TableHeader";
 import { useEffect, useState } from 'react';
 import { useAuth } from "../../context/AuthContext";
-import LoadingSpinner from "../../ui/LoadingSpinner";
 import useDataEntryHooks from "../../hooks/DataEntryHooks";
 
 export default function PokjaLaporanKelompok() {
@@ -14,7 +13,7 @@ export default function PokjaLaporanKelompok() {
     const [selectPreview, setSelectPreview] = useState<any>(null);
     const [selectedRemove, setSelectedRemove] = useState<any[]>([]);
     const [dataTable, setDataTable] = useState<any[]>([]);
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
     const { dataEntryPengadaan, handleDataEntryPengadaanDelete } = useDataEntryHooks();
     const navigate = useNavigate();
 
@@ -73,13 +72,6 @@ export default function PokjaLaporanKelompok() {
         filteringDataEntryPengadaan();
     }, [selectEdit, selectPreview, navigate, search, dataEntryPengadaan, user]);
 
-    if (loading) {
-        return <LoadingSpinner/>
-    }
-
-    if (!user || user.role.name != "pokja/pp") {
-        return <Navigate to="/" replace/>
-    }
 
     return (
         <div>

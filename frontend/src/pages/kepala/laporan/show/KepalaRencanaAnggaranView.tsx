@@ -7,7 +7,7 @@ import FormInput from '../../../../ui/FormInput';
 import useRABHooks from '../../../../hooks/RABHooks';
 import { useAuth } from '../../../../context/AuthContext';
 import LoadingSpinner from '../../../../ui/LoadingSpinner';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import RabDetailTable from '../../../../ui/RabDetailTable';
 import FormSelect from '../../../../ui/FormSelect';
 
@@ -15,7 +15,7 @@ export default function KepalaRencanaAnggaranView() {
   const {
     handleChangeRAB,
   } = useRABHooks();
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
   const [selectedRevision, setSelectedRevision] = useState<any>(null);
   const { setSelectedId, rabDataByid, revisionCount } = useRABHooks();
   const { id } = useParams();
@@ -36,9 +36,6 @@ export default function KepalaRencanaAnggaranView() {
     return <LoadingSpinner />
   }
 
-  if (!user || (user.role.name != "kepala biro" && user.role.name != "kepala bagian")) {
-    return <Navigate to="/" replace />
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

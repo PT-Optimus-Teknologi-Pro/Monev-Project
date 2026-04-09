@@ -10,9 +10,6 @@ import ShowTableForm from '../../../ui/ShowTableForm';
 import FormInput from '../../../ui/FormInput';
 import SubmitButton from '../../../ui/SubmitButton';
 import FormGenerateExcel from '../../../ui/FormGenerateExcel';
-import { useAuth } from '../../../context/AuthContext';
-import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate } from 'react-router-dom';
 import TableHeader from '../../../ui/TableHeader';
 import useScheduleHooks from '../../../hooks/ScheduleHooks';
 import WeekScheduleTable from '../../../ui/WeekScheduleTable';
@@ -144,7 +141,6 @@ export default function PPKJadwalPelaksanaanAdd() {
 
   const { rabData } = useRABHooks();
   const { handleSchedulePost, scheduleData, startDate, endDate, handleChangeSchedule } = useScheduleHooks();
-  const { user, loading } = useAuth();
 
   const totalMinggu = getTotalMingguFromData(dataFile);
 
@@ -248,13 +244,6 @@ export default function PPKJadwalPelaksanaanAdd() {
     },
   ];
 
-  if (loading) {
-    return <LoadingSpinner />
-  }
-
-  if (!user || user.role.name != "ppk") {
-    return <Navigate to="/" replace />
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

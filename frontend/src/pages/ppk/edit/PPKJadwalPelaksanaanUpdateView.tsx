@@ -9,7 +9,7 @@ import FormInput from '../../../ui/FormInput';
 import SubmitButton from '../../../ui/SubmitButton';
 import { useAuth } from '../../../context/AuthContext';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import TableHeader from '../../../ui/TableHeader';
 import useScheduleHooks from '../../../hooks/ScheduleHooks';
 import useRABHooks from '../../../hooks/RABHooks';
@@ -34,21 +34,29 @@ const formatLoopExcel = (index: number): string => {
 const getTotalMingguFromExcel = (
   worksheet: XLSX.WorkSheet,
   startRow: number = 5,
-  maxWeek: number = 20000
+  maxRow: number = 8300,
+  startCol: string = WEEK_START_COL
 ): number => {
-  const startColIndex = XLSX.utils.decode_col(WEEK_START_COL);
-  let total = 0;
+  const range = XLSX.utils.decode_range(worksheet['!ref'] as string);
 
-  for (let i = 0; i < maxWeek; i++) {
-    const col = formatLoopExcel(startColIndex + i);
-    const cell = worksheet[`${col}${startRow}`];
+  const startColIndex = XLSX.utils.decode_col(startCol);
+  const endColIndex = range.e.c;
 
-    if (cell && cell.v !== '' && cell.v !== null) {
-      total = i + 1;
+  let maxColFound = startColIndex;
+  for (let colIndex = endColIndex; colIndex >= startColIndex; colIndex--) {
+    const col = XLSX.utils.encode_col(colIndex);
+
+    for (let row = startRow; row <= Math.min(range.e.r + 1, maxRow); row++) {
+      const cell = worksheet[`${col}${row}`];
+
+      if (cell && cell.v !== '' && cell.v !== null && cell.v !== '-') {
+        maxColFound = colIndex;
+        return maxColFound - startColIndex + 1;
+      }
     }
   }
 
-  return total;
+  return 0;
 };
 
 const parseRABExcel = (
@@ -65,6 +73,25 @@ const parseRABExcel = (
   const getCell = (col: string, row: number) => {
     const cell = worksheet[`${col}${row}`];
     return cell ? cell.v : '';
+  };
+
+  const isRowEmpty = (row: number): boolean => {
+    const harga = ParseNumber(getCell('C', row));
+    const bobot = ParseNumber(getCell('D', row));
+    const desc = getCell('B', row);
+
+    let hasWeek = false;
+    for (let i = 0; i < totalMinggu; i++) {
+      const col = XLSX.utils.encode_col(startColIndex + i);
+      const val = getCell(col, row);
+
+      if (val !== '' && val !== null && val !== '-') {
+        hasWeek = true;
+        break;
+      }
+    }
+
+    return !desc && harga === 0 && bobot === 0 && !hasWeek;
   };
 
   const startColIndex = XLSX.utils.decode_col(WEEK_START_COL);
@@ -84,8 +111,7 @@ const parseRABExcel = (
       });
     }
 
-    const total_price = ParseNumber(getCell('C', row) || 0);
-    if (total_price === 0) {
+    if (isRowEmpty(row)) {
       break;
     }
 
@@ -94,7 +120,7 @@ const parseRABExcel = (
       schedule_header_id: 0,
       number: String(numberCounter++),
       description: String(getCell('B', row)),
-      total_price,
+      total_price: ParseNumber(getCell('C', row) || 0),
       weight: ParseNumber(Number(getCell('D', row)) || 0),
       created_at: '',
       updated_at: '',
@@ -103,7 +129,7 @@ const parseRABExcel = (
   }
 
   return result;
-}
+};
 
 const getTotalMingguFromData = (data: ScheduleItemProps[]): number => {
   return data.length > 0 ? data[0].schedule_weeks.length : 0;
@@ -132,7 +158,7 @@ export default function PPKJadwalPelaksanaanUpdateView() {
   const { rabData } = useRABHooks();
   const [rabDataFilter, setRabDataFilter] = useState<RABProps[]>([]);
 
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
   const location = useLocation();
   const [isDisabled, setIsDisabled] = useState(false);
   const { id } = useParams();
@@ -268,10 +294,6 @@ export default function PPKJadwalPelaksanaanUpdateView() {
     return <LoadingSpinner />
   }
 
-  if (!user || user.role.name != "ppk") {
-    return <Navigate to="/" replace />
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -386,7 +408,7 @@ export default function PPKJadwalPelaksanaanUpdateView() {
               <FormInput
                 title='Tanggal Akhir'
                 placeholder='Masukkan tanggal akhir'
-                value={endDate ? endDate : selectedRab?.tanggal_akhir ? selectedRab?.tanggal_akhir : ""} 
+                value={endDate ? endDate : selectedRab?.tanggal_akhir ? selectedRab?.tanggal_akhir : ""}
                 name='end'
                 disabled={isDisabled}
                 onChange={handleChangeSchedule}

@@ -8,8 +8,6 @@ import html2pdf from "html2pdf.js";
 import * as XLSX from "xlsx-js-style";
 import useDataEntryHooks from "../../hooks/DataEntryHooks";
 import { useAuth } from "../../context/AuthContext";
-import LoadingSpinner from "../../ui/LoadingSpinner";
-import { Navigate } from "react-router-dom";
 import FormatRupiah from "../../utils/FormatRupiah";
 import { ParseNumber } from "../../utils/ParseNumber";
 
@@ -21,7 +19,7 @@ export default function PokjaHasilPenjabatPengadaan() {
     const { dataEntryPengadaan, sumberDanaOptions, metodePengadaanOptions, tahunOptions } = useDataEntryHooks();
     const [dataEntryFilter, setDataEntryFilter] = useState<DataEntryProps[]>([]);
     const [metodeOptionsFilter, setMetodeOptionsFilter] = useState<any>([]);
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
 
     const columns = [
         {
@@ -670,13 +668,6 @@ export default function PokjaHasilPenjabatPengadaan() {
         XLSX.writeFile(workbook, `laporan-pengadaan-penjabat-${tahun || 'semua'}.xlsx`);
     };
 
-    if (loading) {
-        return <LoadingSpinner />
-    }
-
-    if (!user || user.role.name != "pokja/pp") {
-        return <Navigate to="/" replace />
-    }
 
     return (
         <div>

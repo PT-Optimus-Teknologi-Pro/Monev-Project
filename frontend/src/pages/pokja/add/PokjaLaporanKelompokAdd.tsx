@@ -8,9 +8,6 @@ import ShowTableForm from '../../../ui/ShowTableForm';
 import TableContent from '../../../ui/TableContent';
 import FormInput from '../../../ui/FormInput';
 import FormUploadFile from '../../../ui/FormUploadFile';
-import { useAuth } from '../../../context/AuthContext';
-import LoadingSpinner from '../../../ui/LoadingSpinner';
-import { Navigate } from 'react-router-dom';
 import useUserHooks from '../../../hooks/UserHooks';
 import useDataEntryHooks from '../../../hooks/DataEntryHooks';
 import SubmitButton from '../../../ui/SubmitButton';
@@ -29,7 +26,6 @@ export default function PokjaLaporanKelompokAdd() {
     const [showSelectedPPK, setShowSelectedPPK] = useState(false);
     const [userPPK, setUserPPK] = useState<UserProps[]>([]);
 
-    const { user, loading } = useAuth();
     const { listUser } = useUserHooks();
     const [search, setSearch] = useState("");
     const {
@@ -179,13 +175,6 @@ export default function PokjaLaporanKelompokAdd() {
         }
     }
 
-    if (loading) {
-        return <LoadingSpinner />
-    }
-
-    if (!user || user.role.name != "pokja/pp") {
-        return <Navigate to="/" replace />
-    }
 
     return (
         <div className="min-h-screen bg-gray-50">

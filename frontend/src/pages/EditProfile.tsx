@@ -2,8 +2,6 @@
 import { Upload } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import useUserHooks from '../hooks/UserHooks';
-import { Navigate } from 'react-router-dom';
-import LoadingSpinner from '../ui/LoadingSpinner';
 import { BASE_URL_FILE } from '../server/API';
 import FormInput from '../ui/FormInput';
 import FormSelect from '../ui/FormSelect';
@@ -13,7 +11,8 @@ import SubmitButton from '../ui/SubmitButton';
 import BackButton from '../ui/BackButton';
 
 export default function EditProfile() {
-  const { user, loading } = useAuth();
+  const { user: userRaw } = useAuth();
+  const user = userRaw!;
   const [isInit, setIsInit] = useState(true);
   const {
     email,
@@ -53,24 +52,17 @@ export default function EditProfile() {
     fetchUser();
   }, [handleShowUser, user, isInit]);
 
-  if (loading) {
-    return <LoadingSpinner />
-  }
-
-  if (!user) {
-    return <Navigate to="/" replace />
-  }
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 pt-8 pb-12">
       <div className="max-w-5xl mx-auto px-4 md:px-8">
-        <BackButton/>
+        <BackButton />
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-6 hover:shadow-md transition-shadow duration-300" data-aos="fade-up" data-aos-duration="1000">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="flex flex-col items-center gap-4 w-full md:w-auto">
-              <div className={`w-40 h-40 rounded-full ${user.file_photo ? 'border-white' : 'bg-linear-to-br from-hover to-hover border-hover'} flex items-center justify-center overflow-hidden border-4 shadow-lg`}>
-                {user.file_photo ? (
+              <div className={`w-40 h-40 rounded-full ${user?.file_photo ? 'border-white' : 'bg-linear-to-br from-hover to-hover border-hover'} flex items-center justify-center overflow-hidden border-4 shadow-lg`}>
+                {user?.file_photo ? (
                   <img src={`${BASE_URL_FILE}/${user.file_photo}`} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
                   <span className="font-poppins-bold text-5xl text-third">
@@ -121,8 +113,8 @@ export default function EditProfile() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormInput type='email' title="Email" name="email" value={email} onChange={handleChangeUser} placeholder="Masukkan email" />
-            {user.pokja_group_id && (
-                <FormInput title="Kelompok Kerja" value={user?.pokja_group?.name} placeholder="Kelompok Kerja" disabled />
+            {user?.pokja_group_id && (
+              <FormInput title="Kelompok Kerja" value={user?.pokja_group?.name} placeholder="Kelompok Kerja" disabled />
             )}
           </div>
         </div>
@@ -154,8 +146,8 @@ export default function EditProfile() {
             <FormUploadFile title="Unggah Kompetensi Sertifikat" name="competence_file" value={competenceFile as any} onChange={handleFileChangeUser} />
           </div>
 
-          <div className="flex justify-end gap-4 mt-8 pt-8 border-t border-gray-100">            
-            <SubmitButton text='Simpan Perubahan' onClick={() => handleUserPut(user.id)}/>
+          <div className="flex justify-end gap-4 mt-8 pt-8 border-t border-gray-100">
+            <SubmitButton text='Simpan Perubahan' onClick={() => handleUserPut(user?.id)} />
           </div>
         </div>
       </div>

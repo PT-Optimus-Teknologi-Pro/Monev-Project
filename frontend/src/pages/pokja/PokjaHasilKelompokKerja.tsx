@@ -7,8 +7,6 @@ import TableContent from "../../ui/TableContent";
 import * as XLSX from "xlsx-js-style";
 import useDataEntryHooks from "../../hooks/DataEntryHooks";
 import { useAuth } from "../../context/AuthContext";
-import LoadingSpinner from "../../ui/LoadingSpinner";
-import { Navigate } from "react-router-dom";
 import FormatRupiah from "../../utils/FormatRupiah";
 import { ParseNumber } from "../../utils/ParseNumber";
 import html2pdf from "html2pdf.js";
@@ -20,7 +18,7 @@ export default function PokjaHasilKelompokKerja() {
     const tableRef = useRef<HTMLDivElement>(null);
     const { dataEntryPengadaan, tahunOptions, metodePengadaanOptions, sumberDanaOptions } = useDataEntryHooks();
     const [dataEntryFilter, setDataEntryFilter] = useState<DataEntryProps[]>([]);
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
     const [metodeOptionsFilter, setMetodeOptionsFilter] = useState<any>([]);
 
     const columns = [
@@ -614,13 +612,6 @@ export default function PokjaHasilKelompokKerja() {
         XLSX.writeFile(workbook, `laporan-pengadaan-kelompok-kerja-${tahun || 'semua'}.xlsx`);
     };
 
-    if (loading) {
-        return <LoadingSpinner />
-    }
-
-    if (!user || user.role.name != "pokja/pp") {
-        return <Navigate to="/" replace />
-    }
 
     return (
         <div>

@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../../components/Navbar";
 import TableContent from "../../../ui/TableContent";
 import TableHeader from "../../../ui/TableHeader";
 import { useEffect, useState } from 'react';
-import { useAuth } from "../../../context/AuthContext";
-import LoadingSpinner from "../../../ui/LoadingSpinner";
 import useScheduleHooks from "../../../hooks/ScheduleHooks";
 
 export default function KepalaJadwalPelaksanaan() {
@@ -13,7 +11,6 @@ export default function KepalaJadwalPelaksanaan() {
     const [satuanKerja, setSatuanKerja] = useState('');
     const [search, setSearch] = useState('');
     const [selectPreview, setSelectPreview] = useState<any>(null);
-    const { user, loading } = useAuth();
     const { scheduleData, tahunData, satkerData } = useScheduleHooks();
     const [scheduleDataFilter, setScheduleDataFilter] = useState<any[]>([]);
     const navigate = useNavigate();
@@ -76,13 +73,6 @@ export default function KepalaJadwalPelaksanaan() {
         fetchPreview();
     }, [selectPreview, navigate]);
 
-    if (loading) {
-        return <LoadingSpinner/>
-    }
-
-    if (!user || (user.role.name != "kepala bagian" && user.role.name != "kepala biro")) {
-        return <Navigate to="/" replace/>
-    }
 
     return (
         <div>

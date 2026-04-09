@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import TableContent from "../../ui/TableContent";
 import TableHeader from "../../ui/TableHeader";
 import { useEffect, useState } from 'react';
 import { X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import LoadingSpinner from "../../ui/LoadingSpinner";
 import useRABHooks from "../../hooks/RABHooks";
 import FormInput from "../../ui/FormInput";
 import { SwalMessage } from "../../utils/SwalMessage";
@@ -21,7 +20,7 @@ export default function PPKRencanaAnggaran() {
     const [selectPreview, setSelectPreview] = useState<any>(null);
     const [selectedRemove, setSelectedRemove] = useState<number[]>([]);
 
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
     const { 
         rabData,
         tahunData,
@@ -106,13 +105,6 @@ export default function PPKRencanaAnggaran() {
         fetchPreview();
     }, [selectRevisi, selectPreview, navigate, reason]);
 
-    if (loading) {
-        return <LoadingSpinner/>
-    }
-
-    if (!user || user.role.name != "ppk") {
-        return <Navigate to="/" replace/>
-    }
 
     return (
         <div>

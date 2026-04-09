@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../../components/Navbar";
 import TableContent from "../../../ui/TableContent";
 import TableHeader from "../../../ui/TableHeader";
 import { useEffect, useState } from 'react';
-import { useAuth } from "../../../context/AuthContext";
-import LoadingSpinner from "../../../ui/LoadingSpinner";
 import useRABHooks from "../../../hooks/RABHooks";
 
 export default function PPKRencanaAnggaran() {
@@ -14,14 +12,13 @@ export default function PPKRencanaAnggaran() {
     const [search, setSearch] = useState('');
     const [selectPreview, setSelectPreview] = useState<any>(null);
 
-    const { user, loading } = useAuth();
+    const navigate = useNavigate();
     const { 
         rabData,
         tahunData,
         satkerData,
     } = useRABHooks();
     const [rabDataFilter, setRabDataFilter] = useState<RABProps[]>([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const filteringDataRab = () => {
@@ -81,13 +78,6 @@ export default function PPKRencanaAnggaran() {
         fetchPreview();
     }, [selectPreview, navigate]);
 
-    if (loading) {
-        return <LoadingSpinner/>
-    }
-
-    if (!user || (user.role.name != "kepala bagian" && user.role.name != "kepala biro")) {
-        return <Navigate to="/" replace/>
-    }
 
     return (
         <div>

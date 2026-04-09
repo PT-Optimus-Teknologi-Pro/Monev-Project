@@ -6,7 +6,7 @@ import PPKRencanaAnggaranAdd from "../pages/ppk/add/PPKRencanaAnggaranAdd"
 import PPKJadwalPelaksanaan from "../pages/ppk/PPKJadwalPelaksanaan"
 import PPKJadwalPelaksanaanAdd from "../pages/ppk/add/PPKJadwalPelaksanaanAdd"
 import PokjaLaporanPenjabatPengadaan from "../pages/pokja/PokjaLaporanPenjabatPengadaan"
-import PokjaLaporanPenjabatPengadaanAdd from "../pages/pokja/add/PokjaLaporanPenjabatPengadaanAdd"  
+import PokjaLaporanPenjabatPengadaanAdd from "../pages/pokja/add/PokjaLaporanPenjabatPengadaanAdd"
 import KepalaRencanaAnggaran from "../pages/kepala/laporan/KepalaRencanaAnggaran"
 import PokjaHasilKelompokKerja from "../pages/pokja/PokjaHasilKelompokKerja"
 import PokjaHasilPenjabatPengadaan from "../pages/pokja/PokjaHasilPenjabatPengadaan"
@@ -35,74 +35,83 @@ import NotFound from "../pages/NotFound"
 import ForgotPassword from "../pages/auth/ForgotPassword"
 import ResetPassword from "../pages/auth/ResetPassword"
 import Konfigurasi from "../pages/admin/Konfigurasi"
+import { AdminProtectedRoute, GuestProtectedRoute, KepalaProtectedRoute, PokjaProtectedRoute, PPKProtectedRoute } from "./ProtectedRoute"
 // import Konfigurasi from "../pages/Konfigurasi"
 
 export default function Router() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* All User */}
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/ubah-profile" element={<EditProfile/>}/>
-        <Route path="*" element={<NotFound/>}/>
+    <Routes>
+      {/* All User */}
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/ubah-profile" element={<EditProfile />} />
+      <Route path="*" element={<NotFound />} />
 
-        {/* Auth */}
-        <Route path="/masuk" element={<Login/>} />
-        <Route path="/lupa-kata-sandi" element={<ForgotPassword/>} />
+      {/* Auth */}
+      <Route element={<GuestProtectedRoute />}>
+        <Route path="/masuk" element={<Login />} />
+        <Route path="/lupa-kata-sandi" element={<ForgotPassword />} />
         <Route path="/reset-kata-sandi" element={<ResetPassword />} />
+      </Route>
 
-        {/* PPK */}
-        <Route path="/ppk/rencana-anggaran" element={<PPKRencanaAnggaran/>}/>
-        <Route path="/ppk/rencana-anggaran/tambah" element={<PPKRencanaAnggaranAdd/>}/>
-        <Route path="/ppk/rencana-anggaran/ubah/:id" element={<PPKRencanaAnggaranUpdateView/>}/>
-        <Route path="/ppk/rencana-anggaran/lihat/:id" element={<PPKRencanaAnggaranUpdateView/>}/>
+      {/* PPK */}
+      <Route element={<PPKProtectedRoute />}>
+        <Route path="/ppk/rencana-anggaran" element={<PPKRencanaAnggaran />} />
+        <Route path="/ppk/rencana-anggaran/tambah" element={<PPKRencanaAnggaranAdd />} />
+        <Route path="/ppk/rencana-anggaran/ubah/:id" element={<PPKRencanaAnggaranUpdateView />} />
+        <Route path="/ppk/rencana-anggaran/lihat/:id" element={<PPKRencanaAnggaranUpdateView />} />
 
-        <Route path="/ppk/jadwal-pelaksanaan" element={<PPKJadwalPelaksanaan/>}/>
-        <Route path="/ppk/jadwal-pelaksanaan/tambah" element={<PPKJadwalPelaksanaanAdd/>}/>
-        <Route path="/ppk/jadwal-pelaksanaan/lihat/:id" element={<PPKJadwalPelaksanaanUpdateView/>}/>
-        <Route path="/ppk/jadwal-pelaksanaan/ubah/:id" element={<PPKJadwalPelaksanaanUpdateView/>}/>
+        <Route path="/ppk/jadwal-pelaksanaan" element={<PPKJadwalPelaksanaan />} />
+        <Route path="/ppk/jadwal-pelaksanaan/tambah" element={<PPKJadwalPelaksanaanAdd />} />
+        <Route path="/ppk/jadwal-pelaksanaan/lihat/:id" element={<PPKJadwalPelaksanaanUpdateView />} />
+        <Route path="/ppk/jadwal-pelaksanaan/ubah/:id" element={<PPKJadwalPelaksanaanUpdateView />} />
 
-        <Route path="/ppk/realisasi-pekerjaan" element={<PPKRealisasi/>}/>
-        <Route path="/ppk/realisasi-pekerjaan/tambah" element={<PPKRealisasiAdd/>}/>
-        <Route path="/ppk/realisasi-pekerjaan/ubah/:id" element={<PPKRealisasiUpdateView/>}/>
-        <Route path="/ppk/realisasi-pekerjaan/lihat/:id" element={<PPKRealisasiUpdateView/>}/>
+        <Route path="/ppk/realisasi-pekerjaan" element={<PPKRealisasi />} />
+        <Route path="/ppk/realisasi-pekerjaan/tambah" element={<PPKRealisasiAdd />} />
+        <Route path="/ppk/realisasi-pekerjaan/ubah/:id" element={<PPKRealisasiUpdateView />} />
+        <Route path="/ppk/realisasi-pekerjaan/lihat/:id" element={<PPKRealisasiUpdateView />} />
 
-        <Route path="/ppk/project-kurva-s" element={<ProjectKurvaS/>}/>
+        <Route path="/ppk/project-kurva-s" element={<ProjectKurvaS />} />
+      </Route>
 
-        {/* Pokja */}
-        <Route path="/pokja/data-entry-penjabat-pengadaan" element={<PokjaLaporanPenjabatPengadaan/>}/>
-        <Route path="/pokja/data-entry-penjabat-pengadaan/tambah" element={<PokjaLaporanPenjabatPengadaanAdd/>}/>
-        <Route path="/pokja/data-entry-penjabat-pengadaan/ubah/:id" element={<PokjaLaporanPenjabatPengadaanUpdateView/>}/>
-        <Route path="/pokja/data-entry-penjabat-pengadaan/lihat/:id" element={<PokjaLaporanPenjabatPengadaanUpdateView/>}/>
+      {/* Pokja */}
+      <Route element={<PokjaProtectedRoute />}>
+        <Route path="/pokja/data-entry-penjabat-pengadaan" element={<PokjaLaporanPenjabatPengadaan />} />
+        <Route path="/pokja/data-entry-penjabat-pengadaan/tambah" element={<PokjaLaporanPenjabatPengadaanAdd />} />
+        <Route path="/pokja/data-entry-penjabat-pengadaan/ubah/:id" element={<PokjaLaporanPenjabatPengadaanUpdateView />} />
+        <Route path="/pokja/data-entry-penjabat-pengadaan/lihat/:id" element={<PokjaLaporanPenjabatPengadaanUpdateView />} />
 
-        <Route path="/pokja/data-entry-kelompok-kerja" element={<PokjaLaporanKelompok/>}/>
-        <Route path="/pokja/data-entry-kelompok-kerja/tambah" element={<PokjaLaporanKelompokAdd/>}/>
-        <Route path="/pokja/data-entry-kelompok-kerja/ubah/:id" element={<PokjaLaporanKelompokUpdateView/>}/>
-        <Route path="/pokja/data-entry-kelompok-kerja/lihat/:id" element={<PokjaLaporanKelompokUpdateView/>}/>
+        <Route path="/pokja/data-entry-kelompok-kerja" element={<PokjaLaporanKelompok />} />
+        <Route path="/pokja/data-entry-kelompok-kerja/tambah" element={<PokjaLaporanKelompokAdd />} />
+        <Route path="/pokja/data-entry-kelompok-kerja/ubah/:id" element={<PokjaLaporanKelompokUpdateView />} />
+        <Route path="/pokja/data-entry-kelompok-kerja/lihat/:id" element={<PokjaLaporanKelompokUpdateView />} />
 
-        <Route path="/pokja/penjabat-pengadaan" element={<PokjaHasilPenjabatPengadaan/>}/>
-        <Route path="/pokja/kelompok-kerja" element={<PokjaHasilKelompokKerja/>}/>
+        <Route path="/pokja/penjabat-pengadaan" element={<PokjaHasilPenjabatPengadaan />} />
+        <Route path="/pokja/kelompok-kerja" element={<PokjaHasilKelompokKerja />} />
+      </Route>
 
-        {/* Kepala Biro & Kepala Biro */}
-        <Route path="/kepala/rencana-anggaran" element={<KepalaRencanaAnggaran/>}/>
-        <Route path="/kepala/rencana-anggaran/lihat/:id" element={<KepalaRencanaAnggaranView/>}/>
+      {/* Kepala Biro & Kepala Biro */}
+      <Route element={<KepalaProtectedRoute />}>
+        <Route path="/kepala/rencana-anggaran" element={<KepalaRencanaAnggaran />} />
+        <Route path="/kepala/rencana-anggaran/lihat/:id" element={<KepalaRencanaAnggaranView />} />
 
-        <Route path="/kepala/jadwal-pelaksanaan" element={<KepalaJadwalPelaksanaan/>}/>
-        <Route path="/kepala/jadwal-pelaksanaan/lihat/:id" element={<KepalaJadwalPelaksanaanView/>}/>
+        <Route path="/kepala/jadwal-pelaksanaan" element={<KepalaJadwalPelaksanaan />} />
+        <Route path="/kepala/jadwal-pelaksanaan/lihat/:id" element={<KepalaJadwalPelaksanaanView />} />
 
-        <Route path="/kepala/realisasi-pekerjaan" element={<KepalaRealisasi/>}/>
-        <Route path="/kepala/realisasi-pekerjaan/lihat/:id" element={<KepalaRealisasiView/>}/>
+        <Route path="/kepala/realisasi-pekerjaan" element={<KepalaRealisasi />} />
+        <Route path="/kepala/realisasi-pekerjaan/lihat/:id" element={<KepalaRealisasiView />} />
 
-        <Route path="/kepala/penjabat-pengadaan" element={<KepalaHasilPenjabatPengadaan/>}/>
-        <Route path="/kepala/kelompok-kerja" element={<KepalaHasilKelompokKerja/>}/>
+        <Route path="/kepala/penjabat-pengadaan" element={<KepalaHasilPenjabatPengadaan />} />
+        <Route path="/kepala/kelompok-kerja" element={<KepalaHasilKelompokKerja />} />
 
-        <Route path="/kepala/project-kurva-s" element={<KepalaProjectKurvaS/>}/>
+        <Route path="/kepala/project-kurva-s" element={<KepalaProjectKurvaS />} />
+      </Route>
 
-        {/* Admin */}
-        <Route path="/admin/manajemen-pengguna" element={<AdminManajemenPengguna/>}/>        
-        <Route path="/admin/kelompok-kerja" element={<AdminKelompokKerja/>}/>
-        <Route path="/admin/konfigurasi" element={<Konfigurasi/>} />
-      </Routes>
-    </BrowserRouter>
+      {/* Admin */}
+      <Route element={<AdminProtectedRoute />}>
+        <Route path="/admin/manajemen-pengguna" element={<AdminManajemenPengguna />} />
+        <Route path="/admin/kelompok-kerja" element={<AdminKelompokKerja />} />
+        <Route path="/admin/konfigurasi" element={<Konfigurasi />} />
+      </Route>
+    </Routes>
   )
 }
