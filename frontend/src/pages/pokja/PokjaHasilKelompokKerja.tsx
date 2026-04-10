@@ -8,7 +8,7 @@ import * as XLSX from "xlsx-js-style";
 import useDataEntryHooks from "../../hooks/DataEntryHooks";
 import { useAuth } from "../../context/AuthContext";
 import FormatRupiah from "../../utils/FormatRupiah";
-import { ParseNumber } from "../../utils/ParseNumber";
+import { ParseIDRupiahNumber } from "../../utils/ParseNumber";
 import html2pdf from "html2pdf.js";
 
 export default function PokjaHasilKelompokKerja() {
@@ -121,11 +121,11 @@ export default function PokjaHasilKelompokKerja() {
         };
 
         dataEntryFilter.forEach(row => {
-            totals.nilai_pagu += ParseNumber(row.nilai_pagu || 0);
-            totals.nilai_hps += ParseNumber(row.nilai_hps || 0);
-            totals.nilai_penawaran += ParseNumber(row.nilai_penawaran || 0);
-            totals.nilai_negosiasi += ParseNumber(row.nilai_negosiasi || 0);
-            totals.efisiensi += ParseNumber(row.efisiensi || 0);
+            totals.nilai_pagu += ParseIDRupiahNumber(row.nilai_pagu || 0);
+            totals.nilai_hps += ParseIDRupiahNumber(row.nilai_hps || 0);
+            totals.nilai_penawaran += ParseIDRupiahNumber(row.nilai_penawaran || 0);
+            totals.nilai_negosiasi += ParseIDRupiahNumber(row.nilai_negosiasi || 0);
+            totals.efisiensi += ParseIDRupiahNumber(row.efisiensi || 0);
         });
 
         return totals;

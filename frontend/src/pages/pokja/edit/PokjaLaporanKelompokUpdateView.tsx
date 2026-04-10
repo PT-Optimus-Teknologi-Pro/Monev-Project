@@ -23,6 +23,7 @@ export default function PokjaLaporanKelompokUpdateView() {
     const location = useLocation();
     const {
         note,
+        setNote,
         handleEntryKelompokKerjaPut,
         handleChangeEntryPenjabatPengadaan,
         handleChangeFileEntryPenjabatPengadaan,
@@ -70,7 +71,10 @@ export default function PokjaLaporanKelompokUpdateView() {
 
                 pagu: dataEntryPengadaanById?.nilai_pagu ?? null,
                 hps: dataEntryPengadaanById?.nilai_hps ?? null,
+                note: dataEntryPengadaanById?.catatan ?? null,
             });
+
+            setNote(dataEntryPengadaanById?.catatan || "");
         }
 
         const filteringUserPPK = () => {
@@ -202,7 +206,7 @@ export default function PokjaLaporanKelompokUpdateView() {
                                 </h2>
                                 <div className="grid grid-cols-1 gap-6">
                                     <FormUploadFile disabled={isDisabled} value={dataEntryPengadaanById ? dataEntryPengadaanById.bukti_file : ''} title="Evidence/Bukti Laporan Hasil Pemilihan PP" name="file" onChange={handleChangeFileEntryPenjabatPengadaan} />
-                                    <FormInput disabled={isDisabled} title="Catatan" type='textarea' name="note" value={note ? note as any : dataEntryPengadaanById?.catatan} onChange={handleChangeEntryPenjabatPengadaan} placeholder="Catatan" />
+                                    <FormInput disabled={isDisabled} title="Catatan" type='textarea' name="note" value={note} onChange={handleChangeEntryPenjabatPengadaan} placeholder="Catatan" />
 
                                     {showSelectedPPK && (
                                         <FormSelect disabled={isDisabled} title="Ditujukan ke PPK" name="ppk" value={selectedPPK} onChange={handleChangeEntryPenjabatPengadaan}>

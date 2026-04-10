@@ -1,6 +1,7 @@
 import { Upload, FileText } from "lucide-react";
 import React from "react";
 import { BASE_URL_FILE } from "../server/API";
+import { SwalMessage } from "../utils/SwalMessage";
 
 const ALLOWED_FILE_TYPES = [
     { ext: '.pdf', label: 'PDF' },
@@ -10,6 +11,9 @@ const ALLOWED_FILE_TYPES = [
     { ext: '.png', label: 'PNG' },
     { ext: '.webp', label: 'WEBP' },
 ];
+
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 interface FormUploadFileProps {
     title: string;
@@ -28,16 +32,29 @@ export default function FormUploadFile({
     name,
     disabled = false,
     type = 'edit',
-    required=true
+    required = true
 }: FormUploadFileProps) {
     const [fileName, setFileName] = React.useState<string | null>(
         typeof value === 'string' ? value.split("/").pop() || null : value instanceof File ? value.name : null
     );
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setFileName(e.target.files[0].name);
+        const file = e.target.files?.[0];
+
+        if (file) {
+            if (file.size > MAX_FILE_SIZE_BYTES) {
+                SwalMessage({
+                    type: "error",
+                    title: "Gagal!",
+                    text: `Ukuran file maksimal ${MAX_FILE_SIZE_MB} MB. File yang dipilih: ${(file.size / 1024 / 1024).toFixed(2)} MB`,
+                });
+                e.target.value = "";
+                return;
+            }
+
+            setFileName(file.name);
         }
+
         onChange?.(e);
     };
 
@@ -108,7 +125,7 @@ export default function FormUploadFile({
                 {fileName ? fileName.slice(0, 26) + "..." : "Upload"}
             </p>
             <p className="text-[11px] text-gray-400 mt-1">
-                Format: {ALLOWED_FILE_TYPES.map(ft => ft.label).join(', ')}
+                Format: {ALLOWED_FILE_TYPES.map(ft => ft.label).join(', ')} · Maks. {MAX_FILE_SIZE_MB} MB
             </p>
         </div>
     );

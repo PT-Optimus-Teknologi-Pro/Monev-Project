@@ -23,6 +23,7 @@ export default function PokjaLaporanPenjabatPengadaanUpdateView() {
     const {
         selectedPPK,
         note,
+        setNote,
         handleEntryPenjabatPengadaanPut,
         handleChangeEntryPenjabatPengadaan,
         handleChangeFileEntryPenjabatPengadaan,
@@ -79,6 +80,8 @@ export default function PokjaLaporanPenjabatPengadaanUpdateView() {
                 pagu: dataEntryPengadaanById?.nilai_pagu ?? '',
                 hps: dataEntryPengadaanById?.nilai_hps ?? ''
             });
+
+            setNote(dataEntryPengadaanById.catatan || "");
         }
 
         filteringUserPPK();
@@ -206,7 +209,7 @@ export default function PokjaLaporanPenjabatPengadaanUpdateView() {
                                 </h2>
                                 <div className="grid grid-cols-1 gap-6">
                                     <FormUploadFile disabled={isDisabled} value={dataEntryPengadaanById ? dataEntryPengadaanById.bukti_file : ''} title="Evidence/Bukti Laporan Hasil Pemilihan PP" name="file" onChange={handleChangeFileEntryPenjabatPengadaan} />
-                                    <FormInput disabled={isDisabled} title="Catatan" type='textarea' name="note" value={note != "" ? note as any : dataEntryPengadaanById?.catatan} onChange={handleChangeEntryPenjabatPengadaan} placeholder="Catatan" />
+                                    <FormInput disabled={isDisabled} title="Catatan" type='textarea' name="note" value={note} onChange={handleChangeEntryPenjabatPengadaan} placeholder="Catatan" />
 
                                     {(!isEPurchasing && dataEntryPengadaanById.selected_ppk?.role_id == 2) && (
                                         <FormSelect disabled={isDisabled} title="Ditujukan ke" name="ppk" value={selectedPPK ? selectedPPK : dataEntryPengadaanById?.selected_ppk_id?.toString()} onChange={handleChangeEntryPenjabatPengadaan}>
