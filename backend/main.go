@@ -25,6 +25,15 @@ func main() {
 	config.ConnectDB()
 	go controllers.StartLPSECron()
 
+	config.DB.Migrator().DropTable(
+	&models.ScheduleHeader{},
+	&models.ScheduleItem{},
+	&models.ScheduleWeek{},
+	&models.RealisasiHeader{},
+	&models.RealisasiDetail{},
+	&models.DataEntry{},
+)
+
 	config.DB.AutoMigrate(
 		&models.Role{},
 		&models.User{},
