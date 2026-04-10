@@ -23,7 +23,7 @@ type CreateScheduleItemRequest struct {
 }
 
 type CreateScheduleWeekRequest struct {
-	ScheduleItemId uint    `json:"schedule_item_id" binding:"required"`
-	WeekNumber     int     `json:"week_number" binding:"required"`
-	Value          float64 `json:"value" binding:"required"`
+	ScheduleItemId uint     `json:"schedule_item_id" binding:"required"`
+	WeekNumber     *int     `json:"week_number" binding:"required"`
+	Value          *float64 `json:"value" binding:"required"`
 }
