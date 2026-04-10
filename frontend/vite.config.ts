@@ -10,7 +10,7 @@ export default defineConfig({
     port: 5175,
     proxy: {
       '/api': {
-        target: 'https://dev-monevproject.lpse.info/api',
+        target: 'http://100.100.181.124:8088/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
