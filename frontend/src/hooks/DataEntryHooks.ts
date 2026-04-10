@@ -259,7 +259,7 @@ export default function useDataEntryHooks() {
                     text: "Seluruh field (selain catatan) wajib diisi!",
                     type: "error"
                 });
-                
+
                 return;
             }
 
@@ -425,7 +425,7 @@ export default function useDataEntryHooks() {
                     text: "Seluruh field (selain catatan) wajib diisi!",
                     type: "error"
                 });
-                
+
                 return;
             }
 
@@ -594,7 +594,7 @@ export default function useDataEntryHooks() {
                 }
             }
 
-            const formData = new FormData();                    
+            const formData = new FormData();
             formData.append("tipe", "Penjabat");
             formData.append("kode_paket", data.kode_paket);
             formData.append("kode_rup", data.kode_rup);
@@ -729,10 +729,10 @@ export default function useDataEntryHooks() {
                     (value === "" || value === null || value === undefined)
             );
 
-            if (!data || hasEmptyField) {
+            if (!data || hasEmptyField || !note) {
                 SwalMessage({
                     title: "Gagal!",
-                    text: "Seluruh field (selain catatan) wajib diisi!",
+                    text: "Seluruh field wajib diisi!",
                     type: "error"
                 });
                 return;
@@ -860,7 +860,7 @@ export default function useDataEntryHooks() {
             }
             console.error(error)
         }
-    }    
+    }
 
     const handleChangeMadotaryPenjabatPengadaan = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -943,6 +943,7 @@ export default function useDataEntryHooks() {
 
     return {
         note,
+        setNote,
         selectedPPK,
         handleEntryPenjabatPengadaanPost,
         handleChangeEntryPenjabatPengadaan,
